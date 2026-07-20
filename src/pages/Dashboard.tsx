@@ -152,12 +152,16 @@ export const Dashboard: React.FC = () => {
       
       // Construct sharing link
       let shareUrl = "";
-      if (isFirebase) {
+     if (isFirebase) {
   shareUrl = `${window.location.origin}/wedding_invitation/#/invite/${id}`;
 } else {
   const compressedData = encodeInvitationData(inviteData);
   shareUrl = `${window.location.origin}/wedding_invitation/#/invite?data=${compressedData}`;
 }
+console.log("shareUrl =", shareUrl);
+
+setGeneratedLink(shareUrl);
+setCurrentStep(4);
 
 setGeneratedLink(shareUrl);
 setCurrentStep(4);
