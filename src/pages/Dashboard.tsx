@@ -150,24 +150,29 @@ export const Dashboard: React.FC = () => {
       // Save to Database (Firestore) with Local Storage fallback
       const { id, isFirebase } = await saveInvitation(inviteData);
       
-      // Construct sharing link
-      let shareUrl = "";
-     if (isFirebase) {
-  shareUrl = `${window.location.origin}/#/invite/${id}`;
-} else {
-  const compressedData = encodeInvitationData(inviteData);
-  shareUrl = `${window.location.origin}/#/invite?data=${compressedData}`;
-}
+      // Construct sharing link dynamically from current host location
+      const baseUrl = window.location.href.split('#')[0].split('?')[0];
+      const cleanBase = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
 
-setGeneratedLink(shareUrl);
-setCurrentStep(4);
-} catch (e) {
-  console.error(e);
-  alert("Failed to generate link. Creating fallback URL.");
-  const compressedData = encodeInvitationData(values);
-  setGeneratedLink(`${window.location.origin}/#/invite?data=${compressedData}`);
-  setCurrentStep(4);
-} finally {
+      let shareUrl = "";
+      if (isFirebase) {
+        shareUrl = `${cleanBase}#/invite/${id}`;
+      } else {
+        const compressedData = encodeInvitationData(inviteData);
+        shareUrl = `${cleanBase}#/invite?data=${compressedData}`;
+      }
+
+      setGeneratedLink(shareUrl);
+      setCurrentStep(4);
+    } catch (e) {
+      console.error(e);
+      alert("Failed to generate link. Creating fallback URL.");
+      const baseUrl = window.location.href.split('#')[0].split('?')[0];
+      const cleanBase = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+      const compressedData = encodeInvitationData(values);
+      setGeneratedLink(`${cleanBase}#/invite?data=${compressedData}`);
+      setCurrentStep(4);
+    } finally {
       setIsGenerating(false);
     }
   };
