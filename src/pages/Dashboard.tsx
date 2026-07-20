@@ -153,15 +153,11 @@ export const Dashboard: React.FC = () => {
       // Construct sharing link
       let shareUrl = "";
      if (isFirebase) {
-  shareUrl = `${window.location.origin}/wedding_invitation/#/invite/${id}`;
+  shareUrl = `${window.location.origin}/#/invite/${id}`;
 } else {
   const compressedData = encodeInvitationData(inviteData);
-  shareUrl = `${window.location.origin}/wedding_invitation/#/invite?data=${compressedData}`;
+  shareUrl = `${window.location.origin}/#/invite?data=${compressedData}`;
 }
-console.log("shareUrl =", shareUrl);
-
-setGeneratedLink(shareUrl);
-setCurrentStep(4);
 
 setGeneratedLink(shareUrl);
 setCurrentStep(4);
@@ -169,7 +165,7 @@ setCurrentStep(4);
   console.error(e);
   alert("Failed to generate link. Creating fallback URL.");
   const compressedData = encodeInvitationData(values);
-  setGeneratedLink(`${window.location.origin}/wedding_invitation/#/invite?data=${compressedData}`);
+  setGeneratedLink(`${window.location.origin}/#/invite?data=${compressedData}`);
   setCurrentStep(4);
 } finally {
       setIsGenerating(false);
